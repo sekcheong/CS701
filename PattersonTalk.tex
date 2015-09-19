@@ -1,0 +1,111 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+
+\renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
+\begin{flushright} % Right align
+{\LARGE\@title} % Increase the font size of the title
+
+\vspace{50pt} % Some vertical space between the title and author name
+
+{\large\@author} % Author name
+\\\@date % Date
+
+\vspace{40pt} % Some vertical space between the author block and abstract
+\end{flushright}
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{"Instruction Sets Want To Be Free"}} % Subtitle
+
+\author{\textsc{Sek Cheong} % Author
+\\{\textit{UW Madison}}} % Institution
+
+\date{\today} % Date
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+
+%----------------------------------------------------------------------------------------
+%	ESSAY BODY
+%----------------------------------------------------------------------------------------
+
+\section*{Introduction}
+
+The purpose of this talk was to present the case for the need for a free and standard CPU instruction set (ISA) called RISC-V. David Patterson (the legendary co-inventor of the RISC architecture) gave a three part presentation for the proposed open ISA / RISC - V. In the first part Patterson gave a brief history of 50 years of evolution of computer architecture. 
+According to Patterson, IBM developed the System/360 ISA to deal with the incompatibility problems across its several lines of computers. The System/360 was the first major milestone for ISA design as portable hardware-software interface. CPU designs can be split between datapath and control. The biggest challenge for early design was getting the control circuitry correct.  This prompted Maurice Wilkes to invent the idea of microprogramming. The rational behind this invention was that logic is expensive compared to ROM or RAM, ROM is cheaper than RAM and ROM is much faster than RAM. Microprogramming, therefore can reduce the cost of developing and fabricating CPUs. Logic, RAM, ROM in the early stages of IC technology were all implemented using MOS transistors.  With Moore's Law number of transistors could grow rapidly which allowed more complicated instruction sets (CISC). 
+The early ISAs were heavily microcoded. Emer and Clark at DEC in the 1980s found that 20\% of the VAX instructions responsible for 60\% of the microcode but they only account for 0.2\% of the execution time. This discovery along with the rapid improvement in MOS technology prompted Patterson et la to  invent the RISC ISA. In essence, RISC ISA uses fast RAM to build user visible instructions caches as opposed to fixed hardware microcodes. The simple ISA in RISC enables hardwired pipelined implementation which improves instruction execution speed. Patterson claimed that RISC execute more instructions per program but fewer clock cycles per instruction and therefore RISC is faster than CISC. Patterson's claim was convincing for general purpose computation, as there are  numerous independent studies being done to verify his claim. In certain specialized applications, such as DSP, Crypto, and SSE/SIMD (single instruction, multiple data) ,  CISC might have advantage over RISC.
+
+
+
+In  the second part of the talk Patterson stated the case for Open ISA/RISC-V. The main reason for Open ISA was that Open Source Software / Standard just work. Patterson pointed out that there are open standards for Networking, OS, Compiler, Database, such as Ethernet, TCP/IP, POSIX, C, SQL and OpenGL and so on but there were no open standards for architecture. He raised an interesting question that why there are no successful open standard in CPU architecture, like other fields. The prevailing reason according to Patterson,   was that most of the cost, in terms of time and energy, in running software on computer was due to algorithm, compiler, OS/Runtimes. ISA was pretty low in the list of factors that affect the cost. However, Patterson believed that ISA do matter as it is the most important interface in a computer system. There are large cost to tune ISA dependent (and supposedly independent) parts of a modern software stack. Most of the is developing software for it. Patterson's claim is valid and a case in point was  the enormous development effort that Microsoft spent on developing the Windows NT for both MIPS and x86 architectures. The infamous Intel Itanium processor that supposed to be the holy grail of CPU was a spectacular failure, which cost the industry billions of dollars, was another example that proved Patterson's point.  Patterson also explored the idea of embracing a existing ISA but the main reasons against such an idea were boiled down IP (Intellectual Property) issues and feature bloats. 
+
+
+
+One reason that there is no successful open architecture that Patterson didn't mention was the legal/IP issue. In the past software/hardware vendors were burnt too many times by IP and patent disputes on supposedly free open source software or hardware. SCO for example, relied its existence solely on frivolous law suits on Linux vendors. Without sufficient legal protections the idea of adopting open source software or hardware will not go pass the legal team  of a normal company. The sad reality is that there are companies (a.k.a. patent trolls) out there whose legal teams are move innovative than their R\&D team; they will figure out some way to use IP/Patent law to stifle their competitors, event if they didn't invent the said IP/Patent. Technical excellency and sufficient legal protection of use is essential for an open standard to gain wild adaptation.
+
+
+Having made the case for RISC-V, in the third of the talk Patterson mainly focused on presenting the technical aspect of RISC-V. The core RISC-V is composed of three base ISAs (RV32I, RV64I, and RV128I) one per address width. Minimal, fewer than 50 instructions is  needed for the base. There are several standard extension modules: 
+
+\begin{itemize}
+	\item  M: Integer multiply/divide
+	\item  A: Atomic memory operations
+	\item  F: Single-precision floating-point
+	\item  D: Double-precision floating-point
+	\item  G=IMAFD, “General-Purpose”, ISA
+	\item  Q: Quad-precision floating-point
+	\item  C: Compressed Instruction Encoding (16bit and 32bit)
+\end{itemize}
+
+
+There are also reserved opcode spaces for SoC (system on a chip) unique instructions. It is interesting that the base ISAs do not have 16-bit or 8-bit address with instructions. Maybe it is not worth the added complexity and hassle to support two more addressing mode. However, if one of the goals of RISC-V was to be used as an embedded system ISA, it might worth considering adding RV16I in the specification. There are still cases an 32-bit address CPU might be an overkill for an embedded controller. For example, a thermostat, WiFi connected light switches, RFID chips will work well in 16-bit or even 8-bit mode. Maybe the modern semi-conductor fabrication technology has already advanced to the point where narrower than 32-bit address will have a diminish return. It is unclear that in mission critical applications, such as military and air space industries, that if it is beneficial to have even  smaller address  space and fewer instructions thereby allowing wilder or redundant circuitries be placed on the die with the same size. 
+
+
+One recurring theme in Patterson's talk was ISA for SoCs or PostPC era systems. It was, to the author's knowledge,  Steve Job who has coined the term PostPC. What it really means is probably we are beyond the way we use computer in a traditional sense where we need to install an OS on the disk and wait the computer to boot up, install software and learn the software then we can do our work with the computer. In the PostPC sense, the boundary between a computer and an appliance is blurred or eliminated. We don't install OS on a toaster oven (or maybe the oven runs embedded Linux) or learn to use it, we just use it to make toasters. Instead of having a general purpose computer we now can afford to build specialized device that solve some specific tasks. A free open ISA is necessary for build such devices as it lower the cost and barrier of entry. This eventually translates to cheaper device and more innovations. 
+
+
+The software stack, tool chains, design mythologies in support for building RISC-V core might turn out to be even more profound that the RISC-V itself. Specifically, the ``Rocket Chip'' SoC generator and Chisel HDL (hardware description language) are of particular interest. Once can think of the SoC generator is kind of partial evaluator that given certain parameter (such as address with, MMU features, cache size, DSP, etc) of a hypothetical SoC and generate a specialized version of the SoC in HDL which can be compiled to logic gates and run on an FPGA or run on a CPU emulator. With the ability to ``generate'' SoC, it's quite logical to take it to the next step and build an OS partial evaluator that ``generate'' the OS specialized for the SoC.. Patterson also mentioned the concept of virtualized I/O device that is one driver per I/O type as opposed one driver per I/O product in a traditional OS/CPU configuration. This also might tight well in to the idea of partial evaluation. This might be a topic worth of investigation. The ``pie in the sky'' goal is to be able to come up with a set of tools that allows one to build and model check a full stack of a system declaratively thereby reducing layers of software/hardware and minimize the chance of introducing error. 
+
+
+In this talk Patterson presented the history of CPU design, made the case for the need for RISC-V open ISA, and presented some interesting stack of tool chains to generate a working RISC-V SoC. The concept of a open free ISA is convincing. It still remain to be seen how well the RISC-V work in the real applications ranging from embedded device, internet of things, to data center servers. At the end it might boil down to an  engineering/optimization problem. Given the constraints say die size, cost, guaranteed performance, what is the best system one can build from the given set of ISAs defined by the RISC-V. It is critical that RISC-V remains free (free means free; not ``free'' as in a sense of GPL) unencumbered by a single entity (except maybe a certain benevolent dictator). The whole software stack, design mythology (agile hardware development) are very interesting concepts and should evolve over time. The presenter may not agree but RISC-V is Linux to OS  and TeX to typesetting. RISC-V could turn out to be a great eco-system that bring down the barrier to entry to hardware design and encourage innovation. 
+
+
+\end{document}
